@@ -5,6 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iframe Test</title>
   <script>
+
+function doThingsWithCookies() {
+  document.cookie = "foo=bar"; // set a cookie
+}
+
+async function handleCookieAccess() {
+  if (!document.hasStorageAccess) {
+    // This browser doesn't support the Storage Access API
+    // so let's just hope we have access!
+    doThingsWithCookies();
+  } else {
+    const hasAccess = await document.hasStorageAccess();
+    if (hasAccess) {
+      // We have access to third-party cookies, so let's go
+      doThingsWithCookies();
+    } else {
+      // Check whether third-party cookie access has been granted
+      // to another same-site embed
+      try {
+        const permission = await navigator.permissions.query({
+          name: "storage-access",
+        });
+
+        if (permission.state === "granted") {
+          // If so, you can just call requestStorageAccess() without a user interaction,
+          // and it will resolve automatically.
+          await document.requestStorageAccess();
+          doThingsWithCookies();
+        } else if (permission.state === "prompt") {
+          // Need to call requestStorageAccess() after a user interaction
+          btn.addEventListener("click", async () => {
+            try {
+              await document.requestStorageAccess();
+              doThingsWithCookies();
+            } catch (err) {
+              // If there is an error obtaining storage access.
+              console.error(`Error obtaining storage access: ${err}.
+                            Please sign in.`);
+            }
+          });
+        } else if (permission.state === "denied") {
+          // User has denied third-party cookie access, so we'll
+          // need to do something else
+        }
+      } catch (error) {
+        console.log(`Could not access permission state. Error: ${error}`);
+        doThingsWithCookies(); // Again, we'll have to hope we have access!
+      }
+    }
+  }
+}
     // Function to request storage access
     function requestStorageAccess() {
       // Check if the Storage Access API is supported
@@ -31,7 +82,7 @@
     }
   </script>
 </head>
-<body onload="requestStorageAccess()">
+<body onload="handleCookieAccess()">
   <div style="height: 100vh;width: 96%;margin: 20px;box-sizing: border-box;">
     <div>
       <iframe
