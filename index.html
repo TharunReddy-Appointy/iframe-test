@@ -31,7 +31,7 @@ async function handleCookieAccess() {
         if (permission.state === "granted") {
           // If so, you can just call requestStorageAccess() without a user interaction,
           // and it will resolve automatically.
-           btn.addEventListener("click", async () => {
+           // btn.addEventListener("click", async () => {
             try {
               await document.requestStorageAccess();
               doThingsWithCookies();
@@ -40,9 +40,9 @@ async function handleCookieAccess() {
               console.error(`Error obtaining storage access: ${err}.
                             Please sign in.`);
             }
-          });
+          // });
          
-          doThingsWithCookies();
+          // doThingsWithCookies();
         } else if (permission.state === "prompt") {
           // Need to call requestStorageAccess() after a user interaction
           await document.requestStorageAccess();
