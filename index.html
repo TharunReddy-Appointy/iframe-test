@@ -28,10 +28,13 @@ async function handleCookieAccess() {
           name: "storage-access",
         });
 
+        console.log({permission})
+
         if (permission.state === "granted") {
           // If so, you can just call requestStorageAccess() without a user interaction,
           // and it will resolve automatically.
            // btn.addEventListener("click", async () => {
+          console.log("INSIDE GRANTED!!!!")
             try {
               await document.requestStorageAccess();
               doThingsWithCookies();
@@ -44,11 +47,13 @@ async function handleCookieAccess() {
          
           // doThingsWithCookies();
         } else if (permission.state === "prompt") {
+  console.log("INSIDE PROMPT !!!!!")
           // Need to call requestStorageAccess() after a user interaction
           await document.requestStorageAccess();
         } else if (permission.state === "denied") {
           // User has denied third-party cookie access, so we'll
           // need to do something else
+          console.log("INSIDE DENIED !!!!!")
         }
       } catch (error) {
         console.log(`Could not access permission state. Error: ${error}`);
