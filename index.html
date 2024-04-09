@@ -11,11 +11,11 @@ function doThingsWithCookies() {
 }
 
 async function handleCookieAccess() {
-  if (!document.hasStorageAccess) {
-    // This browser doesn't support the Storage Access API
-    // so let's just hope we have access!
-    doThingsWithCookies();
-  } else {
+  // if (!document.hasStorageAccess) {
+  //   // This browser doesn't support the Storage Access API
+  //   // so let's just hope we have access!
+  //   doThingsWithCookies();
+  // } else {
     const hasAccess = await document.hasStorageAccess();
     if (hasAccess) {
       // We have access to third-party cookies, so let's go
@@ -53,7 +53,7 @@ async function handleCookieAccess() {
         console.log(`Could not access permission state. Error: ${error}`);
         doThingsWithCookies(); // Again, we'll have to hope we have access!
       }
-    }
+    // }
   }
 }
     // Function to request storage access
