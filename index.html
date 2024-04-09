@@ -11,16 +11,16 @@ function doThingsWithCookies() {
 }
 
 async function handleCookieAccess() {
-  // if (!document.hasStorageAccess) {
-  //   // This browser doesn't support the Storage Access API
-  //   // so let's just hope we have access!
-  //   doThingsWithCookies();
-  // } else {
+  if (!document.hasStorageAccess) {
+    // This browser doesn't support the Storage Access API
+    // so let's just hope we have access!
+    doThingsWithCookies();
+  } else {
     const hasAccess = await document.hasStorageAccess();
-    if (hasAccess) {
-      // We have access to third-party cookies, so let's go
-      doThingsWithCookies();
-    } else {
+    // if (hasAccess) {
+    //   // We have access to third-party cookies, so let's go
+    //   doThingsWithCookies();
+    // } else {
       // Check whether third-party cookie access has been granted
       // to another same-site embed
       try {
