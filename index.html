@@ -12,7 +12,7 @@
         // Request storage access for the iframe
         document.hasStorageAccess()
           .then(hasAccess => {
-            if (hasAccess) {
+            if (!hasAccess) {
               // If access is not granted, prompt the user for access
               return document.requestStorageAccess();
             }
