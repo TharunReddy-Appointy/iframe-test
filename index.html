@@ -31,11 +31,7 @@ async function handleCookieAccess() {
         if (permission.state === "granted") {
           // If so, you can just call requestStorageAccess() without a user interaction,
           // and it will resolve automatically.
-          await document.requestStorageAccess();
-          doThingsWithCookies();
-        } else if (permission.state === "prompt") {
-          // Need to call requestStorageAccess() after a user interaction
-          btn.addEventListener("click", async () => {
+           btn.addEventListener("click", async () => {
             try {
               await document.requestStorageAccess();
               doThingsWithCookies();
@@ -45,6 +41,11 @@ async function handleCookieAccess() {
                             Please sign in.`);
             }
           });
+         
+          doThingsWithCookies();
+        } else if (permission.state === "prompt") {
+          // Need to call requestStorageAccess() after a user interaction
+          await document.requestStorageAccess();
         } else if (permission.state === "denied") {
           // User has denied third-party cookie access, so we'll
           // need to do something else
