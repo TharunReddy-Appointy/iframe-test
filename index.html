@@ -1,107 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iframe Test</title>
-  <script>
-
-function doThingsWithCookies() {
-  document.cookie = "foo=bar"; // set a cookie
-}
-
-async function handleCookieAccess() {
-  if (!document.hasStorageAccess) {
-    // This browser doesn't support the Storage Access API
-    // so let's just hope we have access!
-    doThingsWithCookies();
-  } else {
-    const hasAccess = await document.hasStorageAccess();
-    // if (hasAccess) {
-    //   // We have access to third-party cookies, so let's go
-    //   doThingsWithCookies();
-    // } else {
-      // Check whether third-party cookie access has been granted
-      // to another same-site embed
-      try {
-        const permission = await navigator.permissions.query({
-          name: "storage-access",
-        });
-
-        console.log({permission})
-
-        if (permission.state === "granted") {
-          // If so, you can just call requestStorageAccess() without a user interaction,
-          // and it will resolve automatically.
-           // btn.addEventListener("click", async () => {
-          console.log("INSIDE GRANTED!!!!")
-            try {
-              await document.requestStorageAccess();
-              doThingsWithCookies();
-            } catch (err) {
-              // If there is an error obtaining storage access.
-              console.error(`Error obtaining storage access: ${err}.
-                            Please sign in.`);
-            }
-          // });
-         
-          // doThingsWithCookies();
-        } else if (permission.state === "prompt") {
-  console.log("INSIDE PROMPT !!!!!")
-          // Need to call requestStorageAccess() after a user interaction
-          await document.requestStorageAccess();
-        } else if (permission.state === "denied") {
-          // User has denied third-party cookie access, so we'll
-          // need to do something else
-          console.log("INSIDE DENIED !!!!!")
-        }
-      } catch (error) {
-        console.log(`Could not access permission state. Error: ${error}`);
-        doThingsWithCookies(); // Again, we'll have to hope we have access!
-      }
-    // }
-  }
-}
-    // Function to request storage access
-    function requestStorageAccess() {
-      // Check if the Storage Access API is supported
-      if ('hasStorageAccess' in document) {
-        // Request storage access for the iframe
-        document.hasStorageAccess()
-          .then(hasAccess => {
-            if (!hasAccess) {
-              // If access is not granted, prompt the user for access
-              return document.requestStorageAccess();
-            }
-          })
-          .then(() => {
-            // Access granted, do any further initialization here if needed
-            console.log('Storage access granted');
-          })
-          .catch(error => {
-            // Handle errors
-            console.error('Storage access error:', error);
-          });
-      } else {
-        console.warn('Storage Access API is not supported');
-      }
-    }
-  </script>
-</head>
-<body onload="handleCookieAccess()">
-  <div style="height: 100vh;width: 96%;margin: 20px;box-sizing: border-box;">
-    <div>
-      <iframe
-        sandbox="allow-storage-access-by-user-activation
-                 allow-scripts
-                 allow-same-origin"
-        src="https://dev-booking.appointy.com/@tharun30l"
-        frameborder="0"
-        height="800px"
-        width="100%"
-        loading="lazy"
-      ></iframe>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iframe Test</title>
+  </head>
+  <body>
+  
+    <div style="height: 100vh;width: 96%;margin: 20px;box-sizing: border-box;">
+      <div>
+        <iframe
+          src="https://www.instagram.com/"
+          frameborder="0"
+          height="800px"
+          width="100%"
+          loading="lazy" frameborder="0" allowfullscreen="" 
+        ></iframe>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
