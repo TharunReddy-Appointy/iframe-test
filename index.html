@@ -1,22 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Iframe Test</title>
-  </head>
-  <body>
-  
-    <div style="height: 100vh;width: 96%;margin: 20px;box-sizing: border-box;">
-      <div>
-        <iframe
-          src="https://www.instagram.com/p/C0FDV_SPNFr1RYYW6JEdCKnWLYoqnD-cfXWz0w0/embed"
-          frameborder="0"
-          height="800px"
-          width="100%"
-          loading="lazy" frameborder="0" allowfullscreen="" 
-        ></iframe>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iframe Test</title>
+  <script>
+    // Function to request storage access
+    function requestStorageAccess() {
+      // Check if the Storage Access API is supported
+      // if ('hasStorageAccess' in document) {
+      //   // Request storage access for the iframe
+      //   document.hasStorageAccess()
+      //     .then(hasAccess => {
+      //       if (hasAccess) {
+      //         // If access is not granted, prompt the user for access
+      //         return document.requestStorageAccess();
+      //       }
+      //     })
+      //     .then(() => {
+      //       // Access granted, do any further initialization here if needed
+      //       console.log('Storage access granted');
+      //     })
+      //     .catch(error => {
+      //       // Handle errors
+      //       console.error('Storage access error:', error);
+      //     });
+      // } else {
+      //   console.warn('Storage Access API is not supported');
+      // }
+
+    navigator.permissions.query({name: 'storage-access'}).then(res => {
+  if (res.state === 'granted') {
+    // Permission has already been granted
+    // You can request storage access without any user gesture
+    rSA();
+  } else if (res.state === 'prompt') {
+    // Requesting storage access requires user gesture
+    // For example, clicking a button
+    const btn = document.createElement("button");
+    btn.textContent = "Grant access";
+    btn.addEventListener('click', () => {
+      // Request storage access
+      rSA();
+    });
+    document.body.appendChild(btn);
+  }
+});
+
+function rSA() {
+  if ('requestStorageAccess' in document) {
+    document.requestStorageAccess().then(
+      (res) => {
+        // Use storage access
+      },
+      (err) => {
+        // Handle errors
+      }
+    );
+  }
+}
+    }
+  </script>
+</head>
+<body onload="requestStorageAccess()">
+  <div style="height: 100vh;width: 96%;margin: 20px;box-sizing: border-box;">
+    <div>
+      <iframe
+        sandbox="allow-storage-access-by-user-activation
+                 allow-scripts
+                 allow-same-origin"
+        src="https://dev-booking.appointy.com/@tharun30l"
+        frameborder="0"
+        height="800px"
+        width="100%"
+        loading="lazy"
+      ></iframe>
     </div>
-  </body>
+  </div>
+</body>
 </html>
